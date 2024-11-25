@@ -1,21 +1,20 @@
 #include <ESP8266WiFi.h>
 #include <Firebase_ESP_Client.h>
 
-/* 1. Define the WiFi credentials */
-#define WIFI_SSID "BoonFamily_WIFI"
-#define WIFI_PASSWORD "M@rley.1803!"
 
-/* 2. Define the API Key */
-#define API_KEY "AIzaSyBhpp-XtCOaSJQFZOl6PP9bcgU85oXn5BU"
+#define WIFI_SSID "WIFISSID"
+#define WIFI_PASSWORD "WIFIPASS"
 
-/* 3. Define the RTDB URL */
-#define DATABASE_URL "https://iot-nc-02-default-rtdb.firebaseio.com/" 
 
-/* 4. Define the user Email and password that alreadey registerd or added in your project */
-#define USER_EMAIL "chazhonrada@gmail.com"
-#define USER_PASSWORD "paranoidandroid"
+#define API_KEY "APIforFirebase"
 
-// Define Firebase Data object
+
+#define DATABASE_URL "url here" 
+
+#define USER_EMAIL "@gmail.com"
+#define USER_PASSWORD "d"
+
+
 FirebaseData fbdo;
 
 FirebaseAuth auth;
@@ -44,24 +43,22 @@ void setup()
   Serial.println(WiFi.localIP());
   Serial.println();
 
-  /* Assign the api key (required) */
+
   config.api_key = API_KEY;
 
-  /* Assign the user sign in credentials */
+ 
   auth.user.email = USER_EMAIL;
   auth.user.password = USER_PASSWORD;
 
-  /* Assign the RTDB URL (required) */
+  
   config.database_url = DATABASE_URL;
 
-  // Comment or pass false value when WiFi reconnection will control by your code or third party library e.g. WiFiManager
   Firebase.reconnectNetwork(true);
 
-  // Since v4.4.x, BearSSL engine was used, the SSL buffer need to be set.
-  // Large data transmission may require larger RX buffer, otherwise connection issue or data read time out can be occurred.
-  fbdo.setBSSLBufferSize(4096 /* Rx buffer size in bytes from 512 - 16384 */, 1024 /* Tx buffer size in bytes from 512 - 16384 */);
+ 
+  fbdo.setBSSLBufferSize(4096 , 1024 );
 
-  // Limit the size of response payload to be collected in FirebaseData
+
   fbdo.setResponseSize(2048);
 
   Firebase.begin(&config, &auth);
@@ -73,7 +70,7 @@ void setup()
 
 void loop()
 {
-  // Firebase.ready() should be called repeatedly to handle authentication tasks.
+
   if (Firebase.ready() && (millis() - sendDataPrevMillis > 1000 || sendDataPrevMillis == 0))
   {
     sendDataPrevMillis = millis();
